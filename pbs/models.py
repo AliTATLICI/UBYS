@@ -13,7 +13,8 @@ class Birim(models.Model):
         ('Y', 'Yüksekokul'),
         ('E', 'Enstitü'),
         ('K', 'Koordinatörlük'),
-        ('R', 'Rektörlüğe Bağlı Birim')
+        ('R', 'Rektörlüğe Bağlı Birim'),
+        ('H', 'Hastane')
     )
 
     birim_turu = models.CharField(max_length=1, choices=birim_turuSecenekleri, verbose_name='Birim Türü')
@@ -29,7 +30,7 @@ class Birim(models.Model):
 
 class Bolum(models.Model):
 
-    birim = models.ForeignKey(Birim, default=1, verbose_name='Fakülte/MYO')
+    birim = models.ForeignKey(Birim, default=1, on_delete=models.PROTECT, verbose_name='Fakülte/MYO')
     adi = models.CharField(max_length=200)
     ing_adi = models.CharField(max_length=200)
     alt_birim_kodu = models.CharField(max_length=2)
@@ -41,16 +42,16 @@ class Bolum(models.Model):
         return self.adi
 
 class Ana_Bilim_Dali(models.Model):
-    fakulte=models.ForeignKey(Birim)
-    bolum=models.ForeignKey(Bolum)
+    fakulte=models.ForeignKey(Birim, on_delete=models.PROTECT)
+    bolum=models.ForeignKey(Bolum, on_delete=models.PROTECT)
     adi=models.CharField(max_length=100)
     ing_adi=models.CharField(max_length=100)
 
 class Personel(models.Model):
 
-    birim = models.ForeignKey(Birim, default=1, verbose_name='Birimi')
-    bolum = models.ForeignKey(Bolum, default=1, verbose_name='Bölümü')
-    ana_bilim_dali = models.ForeignKey(Ana_Bilim_Dali, default=1, verbose_name="Ana Bilim Dalı")
+    birim = models.ForeignKey(Birim, default=1, verbose_name='Birimi', on_delete=models.PROTECT)
+    bolum = models.ForeignKey(Bolum, default=1, verbose_name='Bölümü', on_delete=models.PROTECT)
+    ana_bilim_dali = models.ForeignKey(Ana_Bilim_Dali, default=1, on_delete=models.PROTECT, verbose_name="Ana Bilim Dalı")
     adi_soyadi = models.CharField(max_length=50)
     sicil = models.CharField(max_length=5)
     telefon = models.CharField(max_length=7)

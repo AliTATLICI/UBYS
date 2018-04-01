@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from django.contrib.postgres.fields import JSONField
+#from django.contrib.postgres.fields import JSONField
 from django.db import models
 from django.utils import timezone
 from pygments.lexers import get_all_lexers
@@ -20,8 +20,8 @@ class Program(models.Model):
     ('U', u'Uzaktan Eğitim')
     )
 
-    fakulte=models.ForeignKey(Birim)
-    bolum=models.ForeignKey(Bolum)
+    fakulte=models.ForeignKey(Birim, on_delete=models.PROTECT)
+    bolum=models.ForeignKey(Bolum, on_delete=models.PROTECT)
     adi=models.CharField(max_length=100)
     ing_adi=models.CharField(max_length=100)
     diploma_turu = models.CharField(max_length=1, choices=diploma_turuSecenekleri, verbose_name='Diploma Türü')
@@ -39,6 +39,8 @@ class Program(models.Model):
 
 
 class Ogrenci(models.Model):
+
+    '''
     sinifSecenekleri = (
         ('H', 'Hazırlık'),
         ('1', '1'),
@@ -118,16 +120,20 @@ class Ogrenci(models.Model):
         ('1', '1 Yıl'),
         ('2', '2 Yıl')
     )
-
+    '''
 
     ogrenci_no=models.CharField(max_length=10)
     tc_no=models.CharField(max_length=11)
     adi=models.CharField(max_length=50)
     soyadi=models.CharField(max_length=50)
-    #fakulte_yuksekokul=models.ForeignKey(Birim)
-    #bolumu=models.ForeignKey(Bolum)
-    program=models.ForeignKey(Program)
-    sinif=models.CharField(max_length=2, choices=sinifSecenekleri, verbose_name="Sınıf")
+    cep_telefonu=models.CharField(max_length=11, null=True)
+    fakulte_yuksekokul=models.ForeignKey(Birim, on_delete=models.PROTECT)
+    bolumu=models.ForeignKey(Bolum, on_delete=models.PROTECT)
+    program=models.ForeignKey(Program, on_delete=models.PROTECT)
+    def __str__(self):
+        return ('{} {}'.format(self.adi, self.soyadi))
+
+'''sinif=models.CharField(max_length=2, choices=sinifSecenekleri, verbose_name="Sınıf")
     sube=models.CharField(max_length=2, choices=subeSecenekleri, verbose_name='Şube')
     kayit_yili=models.CharField(max_length=2, choices=kayit_yiliSecenekleri, verbose_name="Kayıt Yılı")
     kayit_tarihi=models.DateTimeField()
@@ -139,16 +145,17 @@ class Ogrenci(models.Model):
     mezuniyet_ayrilis_tarihi=models.DateField()
     diploma_no=models.CharField(max_length=8, verbose_name='Diploma No')
     gecici_mezuniyet_verildiMi=models.BooleanField()
-    danismani=models.ForeignKey(Personel)
+    #danismani=models.ForeignKey(Personel, on_delete=models.PROTECT)
     hazirlik_sinifi=models.CharField(max_length=1, choices=hazirlik_sinifiSecenekleri, verbose_name='Hazırlık Sınıfı')
     staj_gunu=models.SmallIntegerField()
     ogrencilik_hakki=models.BooleanField()
     ek_sinav=models.BooleanField()
-
+'''
 
 
 class Ders(models.Model):
 
+    '''
     konduguYilSecenekleri = (
         ('17', '2017-2018'),
         ('16', '2016-2017'),
@@ -252,14 +259,14 @@ class Ders(models.Model):
         ('9', '9')
     )
 
+    '''
 
-
-    programi = models.ForeignKey(Program, default=1, verbose_name='Programı')
+    programi = models.ForeignKey(Program, default=1, verbose_name='Programı', on_delete=models.PROTECT)
     adi = models.CharField(max_length=200)
     ing_adi = models.CharField(max_length=200)
     ders_kodu = models.CharField(max_length=7)
     ders_kodu2 = models.CharField(max_length=10)
-    genel_bilgi = models.TextField()
+    '''genel_bilgi = models.TextField()
     konduguYil = models.CharField(max_length=2, choices=konduguYilSecenekleri, verbose_name='Konduğu Yıl')
     kaldirildigiYil = models.CharField(max_length=2, choices=kaldirildigiYilSecenekleri, verbose_name='Kaldırıldığı Yıl')
     sinif = models.CharField(max_length=1, choices=sinifSecenekleri, verbose_name='Sınıf')
@@ -276,7 +283,7 @@ class Ders(models.Model):
     krediPratik = models.CharField(max_length=1, choices=krediSecenekleri, verbose_name='Pratik Kredi')
     krediLab = models.CharField(max_length=1, choices=krediSecenekleri, verbose_name='Laboratuvar Kredi')
     krediToplam = models.CharField(max_length=1, verbose_name='Toplam Kredi')
-
+    '''
 
 
 

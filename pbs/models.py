@@ -47,6 +47,9 @@ class Ana_Bilim_Dali(models.Model):
     adi=models.CharField(max_length=100)
     ing_adi=models.CharField(max_length=100)
 
+    def __str__(self):
+        return self.adi
+
 class Personel(models.Model):
 
     birim = models.ForeignKey(Birim, default=1, verbose_name='Birimi', on_delete=models.PROTECT)

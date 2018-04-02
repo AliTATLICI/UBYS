@@ -21,4 +21,5 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     #url(r'^obs', include('obs.urls')),
     url(r'', include('obs.urls')),
+    url(r'', include('pbs.urls')),
 ]
